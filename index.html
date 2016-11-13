@@ -10,6 +10,9 @@
 			font-family: 'pulpFiction';
 			src: url('fonts/pulp-fiction.ttf') format('truetype');
 		}
+/*		* {
+			outline: 2px solid red;
+		}*/
  		body {
  			height: 100vh;
  			max-height: 100%;
@@ -24,11 +27,11 @@
  			color: #fcea6a;
  			margin: 0 auto;
  			padding-top: 30px;
- 			text-shadow: 3px 3px 3px #000;
- 			
+ 			text-shadow: 3px 3px 3px #000;			
  		}
+
  		img {
- 			width: 40%;
+ 			width: 38%;
  		}
  		.md-sidenav-left {
  			height: 100vh;
@@ -37,6 +40,52 @@
  		#main_body {
  			background-color: #000;
  		}
+
+ 		.main-text {
+ 			width: 100%;
+ 			background-color: #000;
+ 			color: #fcea6a;
+ 		}
+
+ 		.main-text p {
+ 			margin: 0 auto;
+ 		}
+
+ 		/*SIDENAV*/
+ 		.md-sidenav-left {
+ 			background-color: #000;
+ 			color: #fcea6a;;
+ 		}
+
+ 		.sidebar-nav {
+ 			background-color: #d03428;
+ 		}
+
+ 		.sidebar-nav h1 {
+ 			font-family: 'pulpFiction', Georgia;
+ 			font-size: 2.5rem;
+ 			text-align: center;
+ 			color: #fcea6a;
+ 			margin: 0 auto;
+ 			padding: 10px 18px;
+ 			text-shadow: 3px 3px 3px #000;
+ 		}
+
+ 		.layout-margin input {
+ 			background-color: grey;
+ 			margin: -2px;
+ 		}
+
+ 		.layout-margin button {
+ 			background-color: #fcea6a;
+ 			margin: -2px;
+ 			margin-top: 7px;
+ 			color: #000;
+ 		}
+
+
+ 		/*FOOTER*/
+
  		footer {
  			background-color: #d03428;
  			height: 100px;
@@ -52,42 +101,45 @@
 <div layout="column" ng-cloak="">
 	<section layout="row" flex="">
 		<md-sidenav class="md-sidenav-left" md-component-id="left" md-disable-backdrop="" md-whiteFrame="4">
-			<md-toolbar class="md-theme-indigo">
-				<h1 class="md-toolbar-tools">Order Now.</h1>
+			<md-toolbar class="sidebar-nav">
+				<h1 class="md-toolbar-tools">Order Now</h1>
 			</md-toolbar>
 			<md-content layout-margin="">
-				<md-input-container>
-					<label for="first">First Name:</label>
-					<input type="text" ng-model="first" required>				
-				</md-input-container>
-				<md-input-container>
-					<label for="last">Last Name:</label>
-					<input type="text" ng-model="last" required>				
-				</md-input-container>
-				<md-input-container>
-					<label for="street">Street:</label>
-					<input type="text" ng-model="street" required>				
-				</md-input-container>
-				<md-input-container>
-					<label for="city">City:</label>
-					<input type="text" ng-model="city" required>				
-				</md-input-container>
-				<h1>Payment Method:</h1>
-				<md-input-container>
-					<label for="credit_card">Credit Card Number:</label>
-					<input type="text" ng-model="credit_card" required>				
-				</md-input-container>
-				<md-input-container>
-					<label for="expiration">Expiration:</label>
-					<input type="text" ng-model="expiration" required>				
-				</md-input-container>
-				<md-input-container>
-					<label for="code">Code:</label>
-					<input type="text" ng-model="code" required>				
-				</md-input-container>
-				<md-button ng-click="toggleLeft()" class="md-raised ">
-						Order Now Muthafucka.
-				</md-button>
+				<form>
+					<md-input-container>
+						<label for="first">First Name:</label>
+						<input type="text" ng-model="customer.first" required>				
+					</md-input-container>
+					<md-input-container>
+						<label for="last">Last Name:</label>
+						<input type="text" ng-model="customer.last" required>				
+					</md-input-container>
+					<md-input-container>
+						<label for="street">Street:</label>
+						<input type="text" ng-model="customer.street" required>				
+					</md-input-container>
+					<md-input-container>
+						<label for="city">City:</label>
+						<input type="text" ng-model="customer.city" required>				
+					</md-input-container>
+					<h1>Payment Method:</h1>
+					<md-input-container>
+						<label for="credit_card">Credit Card Number:</label>
+						<input type="text" ng-model="customer.credit_card" required>				
+					</md-input-container>
+					<md-input-container>
+						<label for="expiration">Expiration:</label>
+						<input type="text" ng-model="customer.expiration" required>				
+					</md-input-container>
+					<md-input-container>
+						<label for="code">Code:</label>
+						<input type="text" ng-model="customer.code" required>				
+					</md-input-container>
+					<md-button ng-click="toggleLeft(); submitOrder()" class="md-raised ">
+							Order Now Muthafucka.
+					</md-button>
+				</form>
+
 			</md-content>
 		</md-sidenav>	
 		<md-content layout="column" >
@@ -98,8 +150,8 @@
 					</div>
 				</md-toolbar>
 			</header>
-			<div layout="row">
-<!-- 				<p>We only carry one kind of pizza mutherfuckas... you better fucking order.</p>	 -->
+			<div layout="row" class="main-text">
+				<p>We didn't ask you a gooddamn thing! ... We only carry one kind of pizza mutherfuckas... you better fucking order.</p>	
 			</div>	
 			<div layout="row" layout-align="center center" id="main_body">		
 				<img ng-src="{{ image }}" alt="">
@@ -116,14 +168,27 @@
 	</section>
 </div>
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/3.6.0/firebase.js"></script>
+<script src="//www.gstatic.com/firebasejs/3.5.2/firebase-app.js"></script>
+<script src="//www.gstatic.com/firebasejs/3.5.2/firebase-database.js"></script>
+<script src="//cdn.firebase.com/libs/angularfire/2.1.0/angularfire.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>	
 <script src="//ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
 <script>
-	var myApp = angular.module('pizzaApp', ['ngMaterial', 'ngMessages']);
+	var myApp = angular.module('pizzaApp', ['ngMaterial', 'ngMessages', 'firebase']);
+	/* FIREBASE */
+
+	var config = {
+	  apiKey: "AIzaSyAHfBgjYE1F_Ga5_vxObcNhcwZ7EOo-ghA",
+	  databaseURL: "https://julespizza-2bf94.firebaseio.com"
+	};
+	firebase.initializeApp(config);
+
+	/* ANGULAR MATERIAL*/
 	myApp.constant("$MD_THEME_CSS", "");
-	myApp.controller('pizzaCtrl', function($scope, $timeout, $mdSidenav){
+	myApp.controller('pizzaCtrl', function($scope, $timeout, $mdSidenav, $firebaseArray){
 		$scope.toggleLeft = buildToggler('left');
 		$scope.toggleRight = buildToggler('right');
 		$scope.image = 'img/pizza.png';
@@ -133,6 +198,14 @@
 			return function(){
 				$mdSidenav(componentId).toggle();
 			}
+		}
+
+		var ref = firebase.database().ref();
+		$scope.customers = $firebaseArray(ref);
+		$scope.submitOrder = function(){
+			$scope.customers.$add($scope.customer);
+			this.customer = null;
+			$scope.$setPristine(true);
 		}
 	})
 </script>
