@@ -125,7 +125,7 @@
 					<h1>Payment Method:</h1>
 					<md-input-container>
 						<label for="credit_card">Credit Card Number:</label>
-						<input type="text" ng-model="customer.credit_card" required>				
+						<input type="text" class="credit-card-number" ng-model="customer.credit_card" required>				
 					</md-input-container>
 					<md-input-container>
 						<label for="expiration">Expiration:</label>
@@ -167,6 +167,8 @@
 		</md-content>	
 	</section>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="lib/jquery.creditCardValidator.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/3.6.0/firebase.js"></script>
 <script src="//www.gstatic.com/firebasejs/3.5.2/firebase-app.js"></script>
@@ -205,9 +207,19 @@
 		$scope.submitOrder = function(){
 			$scope.customers.$add($scope.customer);
 			this.customer = null;
-			$scope.$setPristine(true);
+			$scope.$customer.length = 0;
 		}
 	})
 </script>
+<!-- <script>
+    $(function() {
+        $('.credit-card-number').validateCreditCard(function(result) {
+            $('.log').html('Card type: ' + (result.card_type == null ? '-' : result.card_type.name)
+                     + '<br>Valid: ' + result.valid
+                     + '<br>Length valid: ' + result.length_valid
+                     + '<br>Luhn valid: ' + result.luhn_valid);
+        });
+    });
+</script> -->
 </body>
 </html>
